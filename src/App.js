@@ -1,7 +1,8 @@
 
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect, createElement} from 'react';
 import TimelineItem from './timelineitem.js';
-
+import renderToString from 'react-dom/server';
+import ReactDOMServer from 'react-dom/server';
 function App() {
   const[user,setData]=useState([]);
   
@@ -27,23 +28,39 @@ function App() {
     setData(users);
   }
 }, []);
+
+const a=()=>{
+  
+  const inerPart=document.getElementById('timeline').innerHTML;
+   const orderHtml = '<html><head><title></title></head><body>' + inerPart + '</body></html>'
+  console.log(orderHtml);
+
+ 
+}
   return (
+
     <div>
     <form onSubmit={saveuser}>
       
         <lable>Name:</lable>
 <input type="text" name="Name"/>
-<input type="submit" />
+
+<input type="submit" onClick={a} />
     
     </form>
-    <div className="timeline-container">
+    <div id="timeline">
+    <div className="timeline-container"   >
             {user.map((data) => (
                 <TimelineItem data={data}  />
             ))}
         </div>
+      
     </div>
-    
+   </div>
   );
-}
+  
 
+ 
+}
+//    Parse(html,App);
 export default App;
