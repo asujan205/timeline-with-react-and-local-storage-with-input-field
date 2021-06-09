@@ -1,7 +1,15 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import './App.css';
 import {renderToString} from 'react-dom/server';
 const TimelineItem = ({ data }) => {
+
+    const[svg,setSvg]=useState(null);
+    const url=data.svgUrl
+    useEffect(() => {
+        fetch(data.svgUrl)
+            .then(res => res.text())
+            .then(setSvg)
+             }, [data.svgUrl]);
     return(
     <div className="timeline-item" style={ {
         display: 'flex',
@@ -15,7 +23,8 @@ const TimelineItem = ({ data }) => {
             <span className="tag">
                 
             </span>
-            
+            <p>SVG:</p>
+            <div dangerouslySetInnerHTML={{ __html:svg}} />
             <p>{data.name}</p>
             
             <span className="circle" />

@@ -11,11 +11,21 @@ function App() {
     const newUser = {
       id: Math.random().toString(36).substr(2, 9),
       name: e.target.Name.value,
+      svgUrl:e.target.svgUrl.value,
     };
     setData([...user, newUser]);
     e.target.Name.value = "";
+    e.target.svgUrl.value="";
   };
- 
+  const[svg,setSvg]=useState(null);
+    
+    
+  useEffect(() => {
+      fetch(svgUrl)
+          .then(res => res.text())
+          .then(setSvg)
+      
+           }, [svgUrl]);
   useEffect(() => {
     const json = JSON.stringify(user);
     localStorage.setItem("users", json);
@@ -33,7 +43,7 @@ const a=()=>{
   
   const inerPart=document.getElementById('timeline').innerHTML;
    const orderHtml = '<html><head><title></title></head><body>' + inerPart + '</body></html>'
-  console.log(orderHtml);
+  console.log(orderHtml); 
 
  
 }
@@ -44,7 +54,7 @@ const a=()=>{
       
         <lable>Name:</lable>
 <input type="text" name="Name"/>
-
+<input type='text' name='svgUrl' />
 <input type="submit" onClick={a} />
     
     </form>
