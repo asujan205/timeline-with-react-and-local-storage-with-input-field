@@ -1,8 +1,12 @@
 
 import React,{useState,useEffect, createElement} from 'react';
 import TimelineItem from './timelineitem.js';
-import renderToString from 'react-dom/server';
-import ReactDOMServer from 'react-dom/server';
+import Select from 'react-select';
+import {groupedOptions} from'./docs/data';
+
+// import required react-datepicker styling file
+import "react-datepicker/dist/react-datepicker.css";
+
 function App() {
   const[user,setData]=useState([]);
   
@@ -12,20 +16,16 @@ function App() {
       id: Math.random().toString(36).substr(2, 9),
       name: e.target.Name.value,
       svgUrl:e.target.svgUrl.value,
+      bgColor:e.target.color.value,
+      dateTime:e.target.date.value,
     };
     setData([...user, newUser]);
     e.target.Name.value = "";
     e.target.svgUrl.value="";
+    e.target.color.value="";
+    e.target.date.value='';
   };
-  const[svg,setSvg]=useState(null);
-    
-    
-  useEffect(() => {
-      fetch(svgUrl)
-          .then(res => res.text())
-          .then(setSvg)
-      
-           }, [svgUrl]);
+
   useEffect(() => {
     const json = JSON.stringify(user);
     localStorage.setItem("users", json);
@@ -53,13 +53,25 @@ const a=()=>{
     <form onSubmit={saveuser}>
       
         <lable>Name:</lable>
-<input type="text" name="Name"/>
-<input type='text' name='svgUrl' />
+<input type="text" name="Name"/><br/>
+<lable>SVG:</lable>
+<input type='text' name='svgUrl' /><br/>
+<lable>backgroundColor:</lable>
+<Select
+        className="basic-single"
+        classNamePrefix="select"
+        name="color"
+        options={groupedOptions}
+        
+      /><br/>
+      <label>Date</label>
+      <input type="date" name="date" /><br/>
 <input type="submit" onClick={a} />
     
     </form>
     <div id="timeline">
     <div className="timeline-container"   >
+ 
             {user.map((data) => (
                 <TimelineItem data={data}  />
             ))}
@@ -72,5 +84,5 @@ const a=()=>{
 
  
 }
-//    Parse(html,App);
+
 export default App;
